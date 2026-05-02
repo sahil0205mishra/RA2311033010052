@@ -1,7 +1,7 @@
 const axios = require("axios");
 const CONFIG = require("./config");
 
-// ─── Valid values for each field (lowercase only) ───
+
 const VALID_STACKS = ["backend", "frontend"];
 const VALID_LEVELS = ["debug", "info", "warn", "error", "fatal"];
 const VALID_BACKEND_PACKAGES = [
@@ -11,14 +11,11 @@ const VALID_BACKEND_PACKAGES = [
 const VALID_SHARED_PACKAGES = ["auth", "config", "middleware", "utils"];
 const VALID_PACKAGES = [...VALID_BACKEND_PACKAGES, ...VALID_SHARED_PACKAGES];
 
-// ─── Token cache ───
+
 let cachedToken = null;
 let tokenExpiresAt = 0;
 
-/**
- * Obtain a Bearer token from the evaluation server.
- * Caches the token until it expires.
- */
+
 async function getAuthToken() {
   const now = Math.floor(Date.now() / 1000);
   if (cachedToken && now < tokenExpiresAt - 30) {
@@ -50,17 +47,9 @@ async function getAuthToken() {
   }
 }
 
-/**
- * Reusable Log function that sends structured logs to the evaluation server.
- *
- * @param {string} stack   - "backend" or "frontend"
- * @param {string} level   - "debug" | "info" | "warn" | "error" | "fatal"
- * @param {string} pkg     - Package name (e.g., "handler", "db", "service")
- * @param {string} message - Descriptive log message
- * @returns {Promise<object|null>} - Server response or null on failure
- */
+
 async function Log(stack, level, pkg, message) {
-  // ─── Validate inputs ───
+  
   const s = String(stack).toLowerCase();
   const l = String(level).toLowerCase();
   const p = String(pkg).toLowerCase();
@@ -108,10 +97,7 @@ async function Log(stack, level, pkg, message) {
   }
 }
 
-/**
- * Express-compatible middleware that logs every incoming request.
- * Attach with: app.use(requestLogger)
- */
+
 function requestLogger(req, res, next) {
   const start = Date.now();
 
