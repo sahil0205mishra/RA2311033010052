@@ -3,11 +3,7 @@ const path = require("path");
 const CONFIG = require(path.resolve(__dirname, "../../logging_middleware/config"));
 const { Log, getAuthToken } = require(path.resolve(__dirname, "../../logging_middleware"));
 
-/**
- * Fetches all notifications from the evaluation server.
- *
- * @returns {Promise<Array<{ID: string, Type: string, Message: string, Timestamp: string}>>}
- */
+
 async function fetchNotifications() {
   try {
     const token = await getAuthToken();
