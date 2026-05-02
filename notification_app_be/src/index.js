@@ -14,15 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
-/**
- * GET /notifications/priority
- *
- * Returns the top-N priority notifications.
- * Priority is determined by type weight (Placement > Result > Event) and recency.
- *
- * Query Parameters:
- *   - n (optional): Number of top notifications to return (default: 10)
- */
+
 app.get("/notifications/priority", async (req, res) => {
   try {
     const n = parseInt(req.query.n, 10) || 10;
@@ -55,11 +47,7 @@ app.get("/notifications/priority", async (req, res) => {
   }
 });
 
-/**
- * GET /notifications
- *
- * Returns all notifications from the evaluation server (raw data).
- */
+
 app.get("/notifications", async (req, res) => {
   try {
     await Log("backend", "info", "handler", "GET /notifications request");
@@ -83,11 +71,7 @@ app.get("/notifications", async (req, res) => {
   }
 });
 
-/**
- * GET /notifications/stats
- *
- * Returns notification statistics grouped by type.
- */
+/
 app.get("/notifications/stats", async (req, res) => {
   try {
     await Log("backend", "info", "handler", "GET /notifications/stats request");
@@ -116,15 +100,12 @@ app.get("/notifications/stats", async (req, res) => {
   }
 });
 
-/**
- * GET /health
- * Health-check endpoint.
- */
+
 app.get("/health", (req, res) => {
   res.json({ status: "healthy", service: "notification-app-be" });
 });
 
-// ─── Start server ───
+
 app.listen(PORT, async () => {
   await Log("backend", "info", "config", `Notif app started on port ${PORT}`);
   console.log(`\n🔔 Notification App Backend running at http://localhost:${PORT}`);
