@@ -1,28 +1,4 @@
-/**
- * 0/1 Knapsack solver using Dynamic Programming.
- *
- * Given a set of items (vehicles), each with a weight (Duration in hours)
- * and a value (Impact score), and a knapsack capacity (MechanicHours),
- * find the subset of items that maximises the total value without
- * exceeding the capacity.
- *
- * Time Complexity:  O(n * W)  where n = number of items, W = capacity
- * Space Complexity: O(n * W)  for the DP table
- *
- * No external algorithm libraries are used.
- */
 
-/**
- * Solves the 0/1 Knapsack problem.
- *
- * @param {Array<{TaskID: string, Duration: number, Impact: number}>} items - Vehicles/tasks
- * @param {number} capacity - Maximum mechanic-hours available
- * @returns {{
- *   selectedItems: Array<{TaskID: string, Duration: number, Impact: number}>,
- *   totalImpact: number,
- *   totalDuration: number
- * }}
- */
 function solveKnapsack(items, capacity) {
   const n = items.length;
   const W = capacity;
