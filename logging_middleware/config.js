@@ -1,9 +1,3 @@
-/**
- * Configuration for the evaluation server.
- * 
- * IMPORTANT: Replace the placeholder values below with your actual
- * registration credentials before running any application.
- */
 
 const CONFIG = {
   BASE_URL: "http://20.207.122.201",
