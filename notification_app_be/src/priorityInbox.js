@@ -1,20 +1,4 @@
-/**
- * Priority Inbox Algorithm
- *
- * Determines the top-N most important unread notifications based on:
- *   1. Type weight: Placement (weight=3) > Result (weight=2) > Event (weight=1)
- *   2. Recency: More recent notifications get a higher recency score
- *
- * The combined priority score is:
- *   priority = (typeWeight * TYPE_WEIGHT_MULTIPLIER) + recencyScore
- *
- * Where recencyScore is normalised to [0, 1] based on the age of the
- * notification relative to the oldest one in the dataset.
- *
- * No external algorithm libraries are used.
- */
 
-// ─── Type weight mapping (Placement > Result > Event) ───
 const TYPE_WEIGHTS = {
   Placement: 3,
   Result: 2,
@@ -24,35 +8,13 @@ const TYPE_WEIGHTS = {
 // How much to weight type vs recency (higher = type matters more)
 const TYPE_WEIGHT_MULTIPLIER = 100;
 
-/**
- * Computes a recency score for a notification.
- * Returns a value between 0 (oldest) and 1 (newest).
- *
- * @param {number} timestampMs  - Notification timestamp in ms
- * @param {number} oldestMs     - Oldest notification timestamp in ms
- * @param {number} newestMs     - Newest notification timestamp in ms
- * @returns {number}
- */
+
 function computeRecencyScore(timestampMs, oldestMs, newestMs) {
   if (newestMs === oldestMs) return 1; // All same time
   return (timestampMs - oldestMs) / (newestMs - oldestMs);
 }
 
-/**
- * Finds the top-N priority notifications.
- *
- * @param {Array<{ID: string, Type: string, Message: string, Timestamp: string}>} notifications
- * @param {number} n - Number of top notifications to return (default: 10)
- * @returns {Array<{
- *   id: string,
- *   type: string,
- *   message: string,
- *   timestamp: string,
- *   typeWeight: number,
- *   recencyScore: number,
- *   priorityScore: number
- * }>}
- */
+
 function getTopNPriorityNotifications(notifications, n = 10) {
   if (!notifications || notifications.length === 0) {
     return [];
@@ -92,25 +54,14 @@ function getTopNPriorityNotifications(notifications, n = 10) {
   return scored.slice(0, n);
 }
 
-/**
- * Efficiently maintains a top-N priority set using a min-heap approach.
- * This is useful when notifications keep arriving in real-time.
- *
- * For the evaluation, we use the simpler sort approach above.
- * This class is provided to show how we'd handle streaming data efficiently.
- *
- * Time complexity per insert: O(log N) where N is the heap size
- */
+
 class PriorityInboxHeap {
   constructor(maxSize = 10) {
     this.maxSize = maxSize;
     this.heap = []; // min-heap based on priorityScore
   }
 
-  /**
-   * Insert a notification. If the heap is full and the new item has higher
-   * priority than the minimum, replace the minimum.
-   */
+  
   insert(notification) {
     const item = {
       id: notification.ID || notification.id,
@@ -129,9 +80,7 @@ class PriorityInboxHeap {
     }
   }
 
-  /**
-   * Returns all items sorted by priority (descending).
-   */
+  
   getAll() {
     return [...this.heap].sort((a, b) => b.priorityScore - a.priorityScore);
   }
